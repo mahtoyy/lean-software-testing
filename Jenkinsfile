@@ -1,11 +1,14 @@
 pipeline {
-    agent any 
-    stages {
-        stage('Hello') {
-            steps {
-                sh 'echo "Running on the built-in node!"'
-                sh './mvnw test' // This will work because of the socket mount
+    agent any
+        tools {
+            // This matches the name you gave Maven in 'Global Tool Configuration'
+            maven 'maven3'
+        }
+        stages {
+            stage('Build & Test') {
+                steps {
+                    sh "./mvnw clean test -Dspring.profiles.active=test"
+                }
             }
         }
-    }
 }
